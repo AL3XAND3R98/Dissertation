@@ -1,0 +1,18 @@
+{
+	"session_id":"",
+	"user_ip":"",
+	"user_userAgent":"",
+	"user_deviceOrientation"
+	"user_innerHeight":"",
+	"user_innerWidth":"",
+	"user_innerHTML":"",
+	"user_touchEvent":"",
+	"user_buttonTouch":"",
+	"user_keyDown":"",
+	"user_mouseDown":"",
+	"user_position":"",
+	"user_accelleration":"",
+	"user_timeZone":"",
+	"user_selenium":{"user_cdc":,"user_wdc":,"user_seleniumKW":},
+	"user_product":"",
+}
