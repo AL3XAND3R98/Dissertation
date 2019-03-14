@@ -25,7 +25,7 @@ SECRET_KEY = '^feg(nc-hzpwv0-ouv+e6t)saixu$8osp!=2jn9dg@hrvhw23v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['bdetect.pythonanywhere.com']
 
 
 # Application definition
