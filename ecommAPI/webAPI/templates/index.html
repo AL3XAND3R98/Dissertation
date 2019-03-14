@@ -27,7 +27,7 @@
 							{
 								for (var y = productList.length - 1; y >= 0; y--)
 								{
-									var mylist ='<div id="'+productList[y].productID+'"">'+ "<li>" + '<a href="/api/product/'+productList[y].productID+'">'+ "<i>" + productList[y].productName + "</i></a>" + " : " + productList[y].productDesc + " : £" + productList[y].productPrice + '</li> </div>'+ "<br>"
+									var mylist ='<div id="'+productList[y].productID+'"">'+ "<li>" + '<a href="/storefront/product/'+productList[y].productID+'">'+ "<i>" + productList[y].productName + "</i></a>" + " : " + productList[y].productDesc + " : £" + productList[y].productPrice + '</li> </div>'+ "<br>"
 									$("#productList").append(mylist);
 								}
 							});
