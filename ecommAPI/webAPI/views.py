@@ -9,6 +9,7 @@ from .models import BDetect as BDetectCookie, Product, Basket  # Import the mode
 import datetime 
 import pytz
 import uuid
+from querystring_parser import parser as qsparser
 
 
 utc=pytz.UTC
@@ -18,22 +19,28 @@ def index(request):
 
 	return render(request, "index.html")
 
+def showProduct(request, pid):
+	productJSON, product = getProductHelper(pid)
+	return render(request, "productPage.html", productJSON)
+
+def showCart(request, basketID):
+	cartJSON, cart = getCartHelper(basketID)
+	return render(request, "showCart.html", cartJSON)
 
 def listProducts(request):
 	products = {'Products': 
 		[dict(product) for product in list(Product.objects.values())] 
 	}
-	print(products)
 	return JsonResponse(products)
 
 def getProductHelper(pid):
-	print(pid)
 	productObject = Product.objects.get(productID = pid)
-	print(productObject)
+	print("Retrieved::"+str(productObject))
 	productJSON = {
 		"productID":productObject.productID,
 		"productName":productObject.productName,
 		"productDesc":productObject.productDesc,
+		"productPrice":productObject.productPrice,
 		"productStock":productObject.productStock
 	}
 	return productJSON, productObject
@@ -48,9 +55,10 @@ def getProduct(request, pid):
 
 def getCartHelper(bid):
 	cart = Basket.objects.get(basketID = bid)
+	productJSON, productObject = getProductHelper(cart.basketItem.productID)
 	cartJSON = {
 		"basketID":cart.basketID,
-		"basketItem":cart.basketItem.productName,
+		"basketItem":productJSON,
 		"basketQty":cart.basketQty,
 		"basketTotal":cart.basketTotal,
 		"basketExpiry":cart.basketExpiry
@@ -72,20 +80,35 @@ def getCart(request, basketID):
 
 
 
-@csrf_exempt
+@csrf_exempt 
 def addToCart(request):
+	
 	if isValidCookieHelper(request):
 		body_unicode = request.body.decode('utf-8')
-		body = json.loads(body_unicode)
+		try:
+			query_string_as_dict = qsparser.parse(body_unicode)
+			body = json.dumps(query_string_as_dict,indent=4, sort_keys=True)
+		except:
+			body = body_unicode
+
+		body = json.loads(body)
 		_basketID = uuid.uuid4()
 		_product = body['productID']
-		_qty = body['qty']
+		_qty = int(body['qty'])
+		print("Adding "+_product)
+
+
 		try:
-			productJSON, productObj = getProductHelper(_product)
+			try:
+				productJSON, productObj = getProductHelper(_product)
+			except:
+				return JsonResponse({"success":False, "Message":"Product Not Found"}, status=404)
+
 			if(productObj.productStock>_qty):
 			
 				productObj.productStock=int(productObj.productStock-_qty)
 				productObj.save()
+				print(productObj.productStock)
 				now = datetime.datetime.now()
 				now_plus_10 = now + datetime.timedelta(minutes = 10)
 				newBasket = Basket(basketExpiry=now_plus_10, basketItem=productObj, basketQty=_qty, basketTotal=_qty*productObj.productPrice)
@@ -94,19 +117,22 @@ def addToCart(request):
 				if newBasket.basketID:
 					productJSON, productObj = getProductHelper(_product)
 					cartJSON, cart = getCartHelper(newBasket.basketID)
-					return JsonResponse(cartJSON, safe=False)
+					return JsonResponse(cartJSON, safe=False, status=201)
 				else:
 					return JsonResponse({"success":False})
 			else:
 					return JsonResponse({"success":False, "message":"Quantity Not Available"})
 		except:
-			raise Http404("No Product Found.")
+			return JsonResponse({"success":False, "message":"Server Error"}, status=500)
 
 	else:
-		return JsonResponse({"Message":403})
+		return JsonResponse({"Message":"ACCESS DENIED"}, status=403)
 
 def isValidCookieHelper(request):
-	cookieVal = request.COOKIES['BDetect']
+	try:
+		cookieVal = request.COOKIES['BDetect']
+	except:
+		return False
 	print(cookieVal)
 	try:
 		cookie_object = BDetectCookie.objects.get(cookie_value = cookieVal)
@@ -146,45 +172,27 @@ def isValidCookie(request):
 
 @csrf_exempt
 def setCookie(request):
-
 	body_unicode = request.body.decode('utf-8')
-	body = json.loads(body_unicode)
 	try:
-		user_ip = body['user_ip']
+		query_string_as_dict = qsparser.parse(body_unicode)
+		print("QUERY")
+		print(str(query_string_as_dict))
+		body = json.dumps(query_string_as_dict,indent=4, sort_keys=True)
 	except:
-		return JsonResponse({"message":"Failed Parsing Cookie Data"})
+		body = body_unicode
 
 
-	print("PRE HASH::"+json.dumps(body,indent=4, sort_keys=True))
+	body = json.loads(body)
+	user_ip= body['user_ip']
 
+	user_hashVal = body['user_hashVal']
+	print("SET COOKIE PRE HASH::"+json.dumps(body,indent=4, sort_keys=True))
+	
+	print("ClientSide Hashed Value::"+str(user_hashVal))
 
-	hashVal = HashCheck().hashText(body)
-	print("Hashed Value::"+hashVal)
+	CookieDataCheck = CookieParams(body)
 
-
-	dataHashed = {
-		"session_id":body["session_id"],
-		"user_ip":body["user_ip"],
-		"user_userAgent":body["user_userAgent"],
-		"user_deviceOrientation":body['user_deviceOrientation'],
-		"user_innerHeight":body['user_innerHeight'],
-		"user_innerWidth":body['user_innerWidth'],
-		"user_innerHTML":body['user_innerHTML'],
-		"user_touchEvent":body['user_touchEvent'],
-		"user_buttonTouch":body['user_buttonTouch'],
-		"user_keyDown":body['user_keyDown'],
-		"user_mouseDown":body['user_mouseDown'],
-		"user_accelleration":body['user_accelleration'],
-		"user_locale":body['user_locale'],
-		"user_timeZone":body['user_timeZone'],
-		"user_selenium":body['user_selenium'],
-		"user_product":body['user_product'],
-		"user_hashVal":hashVal
-	}
-	print("POST HASH::"+json.dumps(dataHashed, indent=4, sort_keys=True))
-
-	CookieDataCheck = CookieParams(dataHashed)
-
+	response = JsonResponse({"success":False})
 
 	if(CookieDataCheck.hashCheck()):
 		print("Cookie Data Integrity")
@@ -209,7 +217,7 @@ def setCookie(request):
 								cookieRow = BDetectCookie(cookie_value=BDetect, cookie_expiration=now_plus_10)
 								cookieRow.save()
 								if cookieRow.id:
-									response.set_cookie('BDetect', BDetect)
+									response.set_cookie('BDetect', BDetect, max_age=900)
 									print("Cookie Set")
 									cookies = {'products': 
 										[dict(cookie) for cookie in list(BDetectCookie.objects.values())] 

@@ -35,10 +35,10 @@ class HashCheck:
 		return(hash)
 		
 	def checkHash(self, hashToVerify, dataToHash):
-		print("dataToHash::"+json.dumps(dataToHash, indent=4, sort_keys=True))
+		print("checkHashdataToHash::"+json.dumps(dataToHash, indent=4, sort_keys=True))
 		dataToHash = json.dumps(dataToHash, indent=4, sort_keys=True)
 		hashCheck = hashlib.sha256(self.salt.encode() + dataToHash.encode()).hexdigest()
-		print("hashCheck::"+hashCheck)
+		print("checkHashHashCheck::"+hashCheck)
 		if hashCheck == hashToVerify:
 			return True
 		else:

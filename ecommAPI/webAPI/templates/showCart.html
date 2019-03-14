@@ -2,46 +2,64 @@
 <html>
 	<head>
    
-		<title>Products</title>
+		<title>Your Cart</title>
    
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
  
 	</head>
 <body>
-	<h1> Products </h1>
+	<h1>Your Cart</h1>
 
-	<div id="productList"> </div>
+	<div id="basketDetails"> 
 
+		<p> {{basketItem.productName}} ({{basketItem.productID}}) -  <i> £{{basketItem.productPrice}} </i> </p>
+
+		<form id="checkout">
+		
+			<input hidden="true" name="productID" type="text" value="{{productID}}">
+			<input hidden="true" name="qty" type="text" value="1">
+
+			<input class= "post" type="submit" value="Checkout">
+		</form>
+
+	</div>
 
 
 	<script type="text/javascript">
+
 		$(function()
-				{
-					$.ajax(
-					{
-						url: "/api/listProducts/",
-						type: "GET",
-						success: function(response)
-						{
-							$.each(response, function(prod, productList)
-							{
-								for (var y = productList.length - 1; y >= 0; y--)
-								{
-									var mylist ='<div id="'+productList[y].productID+'"">'+ "<li>" + '<a href="/api/product/'+productList[y].productID+'">'+ "<i>" + productList[y].productName + "</i></a>" + " : " + productList[y].productDesc + " : £" + productList[y].productPrice + '</li> </div>'+ "<br>"
-									$("#productList").append(mylist);
-								}
-							});
-						}
-					}).fail(function(data)
-					{
-						console.log(data);
-					});
+		{
+			$("#addToCart").on("submit", function(event)
+			{
+				event.preventDefault();
+				var values = {};
+				$.each($('#addToCart').serializeArray(), function(i, field) {
+					values[field.name] = field.value;
 				});
-		
+
+
+
+				console.log(JSON.stringify(values));
+				$.ajax(
+				{
+					type: 'POST',
+					url: "/api/addToCart/",
+					data: values,
+					dataType: "json",
+					success: function(resultData)
+					{
+						console.log(resultData);
+						window.location.replace("/api/getCart/"+resultData.basketID);
+
+					}
+				}).fail(function(data)
+				{
+					console.log(data)
+				})
+			});
+		});
+
 	</script>
-
-
-
 
 
 

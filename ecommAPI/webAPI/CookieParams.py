@@ -1,8 +1,6 @@
-import pandas
-import numpy
 import uuid
-import requests
 import json
+import requests
 
 from .HashCheck import *
 '''{
@@ -53,14 +51,16 @@ class CookieParams:
 
 	def ipCheck(self):
 
-		response = requests.get('https://www.blacklistmaster.com/restapi/v0/blacklistcheck/ip/'+self.ip, auth=('ec16159', 'apiEC16159'))
+		'''response = requests.get('https://www.blacklistmaster.com/restapi/v0/blacklistcheck/ip/'+self.ip, auth=('ec16159', 'apiEC16159'))
 		jsonRes = json.loads(response.text)
 		print(jsonRes)
 		status = jsonRes['status']
 		if status=="Not blacklisted":
 			return True
 		else:
-			return False
+			return False'''
+
+		return True
 
 
 	def uaCheck(self):
@@ -76,22 +76,25 @@ class CookieParams:
 
 	def browserCheck(self):
 		
-		if self.deviceOrientation=="LS" or self.deviceOrientation=="PT" and self.innerHeight>150 and self.innerWidth>100 and self.innerHTML:
+		if self.deviceOrientation=="LS" or self.deviceOrientation=="PT" and int(self.innerHeight)>150 and int(self.innerWidth)>100 and self.str2bool(self.innerHTML):
 			return True
 		else:
 			return False
 
+	def str2bool(self, v):
+	  return v.lower() in ("yes", "true", "t", "1")
 
 	def seleniumCheck(self):
 		
-		if (not self.selenium['user_cdc']) and (not self.selenium['user_cdc']) and (not self.selenium['user_seleniumKW']):
+
+		if (not self.str2bool(self.selenium['user_cdc'])) and (not self.str2bool(self.selenium['user_cdc'])) and (not self.str2bool(self.selenium['user_seleniumKW'])):
 			return True
 		else:
 			return False
 
 	def usageCheck(self):
 
-		if self.keyDown>5 and self.buttonTouch>=1 and self.touchEvent and self.mouseDown>=1 and self.accelleration>0.5:
+		if int(self.keyDown)>5 and int(self.buttonTouch)>=1 and self.str2bool(self.touchEvent) and int(self.mouseDown)>=1 and float(self.accelleration)>0.5:
 			return True
 		else:
 			return False
@@ -129,7 +132,7 @@ class CookieParams:
 			"user_selenium":self.selenium,
 			"user_product":self.product
 		}
-		print(data)
+		print("InsideCookiePCheck::"+json.dumps(data, indent=4, sort_keys=True))
 		return HashCheck().checkHash(self.hashVal, data)
 
 	def generateCookie(self):
