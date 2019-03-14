@@ -47,12 +47,31 @@
 					url: "/api/addToCart/",
 					data: values,
 					dataType: "json",
-					success: function(resultData)
+	
+					statusCode: 
 					{
-						console.log(resultData);
-						window.location.replace("/api/showCart/"+resultData.basketID+"/");
+						201: function(resultData){
+							console.log(resultData);
+							window.location.replace("/api/showCart/"+resultData.basketID+"/");
+						},
 
+						404: function() {
+					      alert('Product not found');
+					    },
+
+					    202: function() {
+					       alert('Stock not available');
+					   	},
+
+					   403: function() {
+					       alert('Access Denied');
+					   },
+
+					   500: function() {
+					       alert('Server Error');
+					   },
 					}
+
 				}).fail(function(data)
 				{
 					console.log(data)

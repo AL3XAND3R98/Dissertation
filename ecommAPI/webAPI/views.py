@@ -97,13 +97,13 @@ def addToCart(request):
 
 
 		try:
-			try:
-				productJSON, productObj = getProductHelper(_product)
-			except:
-				return JsonResponse({"success":False, "Message":"Product Not Found"}, status=404)
+			productJSON, productObj = getProductHelper(_product)
+		except:
+			return JsonResponse({"success":False, "Message":"Product Not Found"}, status=404)
 
+		print("Product found...")
+		try:
 			if(productObj.productStock>=_qty):
-			
 				productObj.productStock=int(productObj.productStock-_qty)
 				productObj.save()
 				print(productObj.productStock)
@@ -117,14 +117,16 @@ def addToCart(request):
 					cartJSON, cart = getCartHelper(newBasket.basketID)
 					return JsonResponse(cartJSON, safe=False, status=201)
 				else:
-					return JsonResponse({"success":False})
+					return JsonResponse({"success":False}, status=409)
 			else:
-					return JsonResponse({"success":False, "message":"Quantity Not Available"})
+				print("HIIIII")
+				return JsonResponse({"success":False, "message":"Quantity Not Available"}, status=202)
 		except:
 			return JsonResponse({"success":False, "message":"Server Error"}, status=500)
 
+
 	else:
-		return JsonResponse({"Message":"ACCESS DENIED"}, status=403)
+		return JsonResponse({"Message":"ACCESS DENIED"}, status=290)
 
 def isValidCookieHelper(request):
 	try:
