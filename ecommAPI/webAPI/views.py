@@ -13,8 +13,6 @@ from querystring_parser import parser as qsparser
 
 
 utc=pytz.UTC
-
-
 def index(request):
 
 	return render(request, "index.html")
@@ -104,7 +102,7 @@ def addToCart(request):
 			except:
 				return JsonResponse({"success":False, "Message":"Product Not Found"}, status=404)
 
-			if(productObj.productStock>_qty):
+			if(productObj.productStock>=_qty):
 			
 				productObj.productStock=int(productObj.productStock-_qty)
 				productObj.save()
