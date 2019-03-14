@@ -44,7 +44,7 @@
 				$.ajax(
 				{
 					type: 'POST',
-					url: "/api/addToCart/",
+					url: "/storefront/api/addToCart/",
 					data: values,
 					dataType: "json",
 	
@@ -52,7 +52,7 @@
 					{
 						201: function(resultData){
 							console.log(resultData);
-							window.location.replace("/api/showCart/"+resultData.basketID+"/");
+							window.location.replace("/storefront/showCart/"+resultData.basketID+"/");
 						},
 
 						404: function() {
@@ -131,7 +131,7 @@
 			
 				$.ajax(
 				{
-					url: "/api/isValid/",
+					url: "/storefront/api/isValid/",
 					type: "GET",
 					dataType: "json",
 					success: function(resultData)
@@ -143,7 +143,7 @@
 							$.ajax(
 							{
 								type: 'POST',
-								url: "/api/setCookie/",
+								url: "/storefront/api/setCookie/",
 								data: values,
 								dataType: "text",
 
@@ -162,7 +162,7 @@
 				$.ajax(
 				{
 					type: 'POST',
-					url: "/api/setCookie/",
+					url: "/storefront/api/setCookie/",
 					data: values,
 					dataType: "text",
 
