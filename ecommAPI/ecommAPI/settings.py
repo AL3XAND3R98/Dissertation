@@ -25,7 +25,7 @@ SECRET_KEY = '^feg(nc-hzpwv0-ouv+e6t)saixu$8osp!=2jn9dg@hrvhw23v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['bdetect.pythonanywhere.com']
+ALLOWED_HOSTS = ['bdetect.pythonanywhere.com','localhost']
 
 
 # Application definition
@@ -119,3 +119,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = '/home/bdetect/Dissertation/ecommAPI/static'
+
