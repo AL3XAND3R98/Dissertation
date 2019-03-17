@@ -35,7 +35,7 @@ class CookieParams:
 				keydata = privatefile.read()
 				self.privkey = rsa.PrivateKey.load_pkcs1(keydata)
 		except:
-			with open('private.pem', mode='rb') as privatefile:
+			with open('/home/bdetect/Dissertation/ecommAPI/webAPI/private.pem', mode='rb') as privatefile:
 				keydata = privatefile.read()
 				self.privkey = rsa.PrivateKey.load_pkcs1(keydata)
 
