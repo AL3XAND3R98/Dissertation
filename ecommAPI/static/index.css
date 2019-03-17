@@ -1,0 +1,127 @@
+html {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 14pt;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    color: #4b4b4b;
+}
+
+body {
+    display: block;
+    background-color: #3d3d3d;
+}
+
+h1 {
+    color: #ffb8b8;
+    font-size: 30pt;
+    text-align: center;
+}
+
+h1:hover {
+    cursor: default;
+}
+
+.productContainer {
+    display: block;
+    width: 100%;
+    height: 1000px;
+    overflow-y: scroll;
+}
+
+.product {
+    border-radius: 40px;
+    display: block;
+    height: 200px;
+    margin: auto;
+    width: 50%;
+    margin-top: 20px;
+    padding: 10px;
+    overflow: hidden;
+    background-color: #ffb8b8;
+}
+
+.product:hover {
+    cursor: pointer;
+    background-color: #ffcccc;
+}
+
+.productImage {
+    display: inline-block;
+    float: right;
+    border-radius: 20px;
+    width: 100px;
+    padding: 0px;
+}
+
+.productContainer {
+    display: block;
+    height: 600px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.productDetails {
+    margin: auto;
+    margin-top: 125px;
+    width: 50%;
+    height: 300px;
+    background-color: #3d3d3d;
+    padding: 10px;
+}
+
+.prodText {
+    font-color: #3d3d3d;
+}
+
+.productPageImg {
+    display: inline;
+    height: 250px;
+    border-radius: 10px;
+    width: 350px;
+    margin: 25px;
+}
+
+.description {
+    display: inline;
+    float: right;
+    height: 200px;
+    width: 250px;
+    margin: 25px;
+    position: absolute;
+    color: #757D75;
+}
+
+.price {
+    display: inline;
+    float: right;
+    position: relative;
+    top: 230px;
+    height: 25px;
+    margin-right: 10px;
+    margin-top: 15px;
+    color: #757D75;
+}
+
+.atc {
+    display: inline;
+    float: right;
+    position: relative;
+    top: 230px;
+    height: 25px;
+    margin-right: 50px;
+    margin-top: 15px;
+}
+
+.atc:hover {
+    cursor: pointer;
+}
+
+.basketImage {
+    border-radius: 20px;
+    display: inline;
+    height: 100px;
+    width: 150px;
+}

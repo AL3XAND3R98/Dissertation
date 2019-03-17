@@ -8,15 +8,19 @@
 		{% load staticfiles %}
 		<!-- Bootstrap core CSS -->
 		<link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+		<link href="{% static "index.css" %}" rel="stylesheet">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
  
 	</head>
 <body>
 	<h1> Products </h1>
 
-	<div id="productList"> </div>
+	<div id="productList" class="productContainer">
 
 
+	</div>
+
+ 'onclick="location.href = \'/storefront/product/"+productList[y].productID +"/\'"+
 
 	<script type="text/javascript">
 		$(function()
@@ -31,7 +35,7 @@
 							{
 								for (var y = productList.length - 1; y >= 0; y--)
 								{
-									var mylist ='<div id="'+productList[y].productID+'"">'+ "<li>" + '<a href="/storefront/product/'+productList[y].productID+'">'+ "<i>" + productList[y].productName + "</i></a>" + " : " + productList[y].productDesc + " : £" + productList[y].productPrice + '</li> </div>'+ "<br>"
+									var mylist ='<div id="'+productList[y].productID+'" class="product" onclick="location.href ='+"'" +'/storefront/product/'+productList[y].productID +"'"+'"' +'>'+ '<li style="list-style: none;" >' + '<a>'+ "<i>" + productList[y].productName + "</i></a>" + " : " + productList[y].productDesc + " : £" + productList[y].productPrice + '</li>{% load staticfiles %}<img class="productImage" src="{% static "presto.jpg" %}"> </div>'+ "<br>"
 									$("#productList").append(mylist);
 								}
 							});

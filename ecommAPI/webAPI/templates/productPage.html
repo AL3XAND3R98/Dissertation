@@ -7,24 +7,28 @@
 		{% load staticfiles %}
 		<!-- Bootstrap core CSS -->
 		<link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+		<link href="{% static "index.css" %}" rel="stylesheet">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
- 
 	</head>
 <body>
 	<h1>{{productName}}</h1>
 
-	<div id="productDetails"> 
+	<div id="productDetails" class="productContainer"> 
+		<div class="productDetails">
+			<img id="productImage" src="{% static "presto.jpg" %}" class="productPageImg">
+			<p class="description">{{productDesc}} </p>
 
-		<p> {{productDesc}} </p>
-		<i> £ {{productPrice}} </i>
+			<form id="addToCart" class="atc">
+			
+				<input hidden="true" name="productID" type="text" value="{{productID}}">
+				<input hidden="true" name="qty" type="text" value="1">
 
-		<form id="addToCart">
-		
-			<input hidden="true" name="productID" type="text" value="{{productID}}">
-			<input hidden="true" name="qty" type="text" value="1">
+				<input class= "post" type="submit" value="Add To Cart">
+			</form>
 
-			<input class= "post" type="submit" value="Add To Cart">
-		</form>
+			<i class="price"> £ {{productPrice}} </i>
+
+		</div>
 
 	</div>
 

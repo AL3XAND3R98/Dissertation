@@ -1,7 +1,7 @@
 import uuid
 import json
 import requests
-
+import rsa
 from .HashCheck import *
 '''{
 	"session_id":"",
@@ -30,24 +30,37 @@ from .HashCheck import *
 class CookieParams:
 	def __init__(self, jsonData):
 
+		with open('private.pem', mode='rb') as privatefile:
+			keydata = privatefile.read()
+			self.privkey = rsa.PrivateKey.load_pkcs1(keydata)
+	
 		self.jsonData = jsonData
-		self.session_id = jsonData['session_id']
-		self.ip = jsonData['user_ip']
-		self.ua = jsonData['user_userAgent']
-		self.deviceOrientation = jsonData['user_deviceOrientation']
-		self.innerHeight = jsonData['user_innerHeight']
-		self.innerWidth = jsonData['user_innerWidth']
-		self.innerHTML = jsonData['user_innerHTML']
-		self.touchEvent = jsonData['user_touchEvent']
-		self.buttonTouch = jsonData['user_buttonTouch']
-		self.mouseDown = jsonData['user_mouseDown']
-		self.keyDown = jsonData['user_keyDown']
-		self.accelleration = jsonData['user_accelleration']
-		self.timeZone = jsonData['user_timeZone']
-		self.locale = jsonData['user_locale']
+		self.session_id = self.getString(jsonData['session_id'])
+		self.ip = self.getString(jsonData['user_ip'])
+		self.ua = self.getString(jsonData['user_userAgent'])
+		self.deviceOrientation = self.getString(jsonData['user_deviceOrientation'])
+		self.innerHeight = self.getString(jsonData['user_innerHeight'])
+		self.innerWidth = self.getString(jsonData['user_innerWidth'])
+		self.innerHTML = self.getString(jsonData['user_innerHTML'])
+		self.touchEvent = self.getString(jsonData['user_touchEvent'])
+		self.buttonTouch = self.getString(jsonData['user_buttonTouch'])
+		self.mouseDown = self.getString(jsonData['user_mouseDown'])
+		self.keyDown = self.getString(jsonData['user_keyDown'])
+		self.accelleration = self.getString(jsonData['user_accelleration'])
+		self.timeZone = self.getString(jsonData['user_timeZone'])
+		self.locale = self.getString(jsonData['user_locale'])
 		self.selenium = jsonData['user_selenium']
-		self.product = jsonData['user_product']
+		self.cdc = self.getString(self.selenium['user_cdc'])
+		self.seleniumKW = self.getString(self.selenium['user_seleniumKW'])
+		self.wdc = self.getString(self.selenium['user_wdc'])
+		self.product = self.getString(jsonData['user_product'])
 		self.hashVal = jsonData['user_hashVal']
+
+	def getString(self, cipher):
+		print("CIPHER"+cipher)
+		plain= rsa.decrypt(bytes.fromhex(str(cipher)), self.privkey).decode('utf-8')
+		print(plain)
+		return plain
 
 	def ipCheck(self):
 
@@ -87,7 +100,7 @@ class CookieParams:
 	def seleniumCheck(self):
 		
 
-		if (not self.str2bool(self.selenium['user_cdc'])) and (not self.str2bool(self.selenium['user_cdc'])) and (not self.str2bool(self.selenium['user_seleniumKW'])):
+		if (not self.str2bool(self.cdc)) and (not self.str2bool(self.cdc)) and (not self.str2bool(self.seleniumKW)):
 			return True
 		else:
 			return False
@@ -129,7 +142,12 @@ class CookieParams:
 			"user_accelleration":self.accelleration,
 			"user_locale":self.locale,
 			"user_timeZone":self.timeZone,
-			"user_selenium":self.selenium,
+			"user_selenium":
+			{
+				"user_cdc":self.cdc,
+				"user_seleniumKW":self.seleniumKW,
+				"user_wdc":self.wdc
+			},
 			"user_product":self.product
 		}
 		print("InsideCookiePCheck::"+json.dumps(data, indent=4, sort_keys=True))

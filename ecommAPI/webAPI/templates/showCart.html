@@ -7,23 +7,28 @@
 		{% load staticfiles %}
 		<!-- Bootstrap core CSS -->
 		<link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+		<link href="{% static "index.css" %}" rel="stylesheet">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ 
  
 	</head>
 <body>
 	<h1>Your Cart</h1>
 
 	<div id="basketDetails"> 
+		<div class="productDetails">
+			<img class="basketImage" src="{% static "presto.jpg" %}">
+			<br>
+			<br>
+			<font color="#ffb8b8"><p> {{basketItem.productName}} ({{basketItem.productID}}) -  <i> £{{basketItem.productPrice}} </i> </p></font>
+			<form id="checkout">
+			
+				<input hidden="true" name="productID" type="text" value="{{productID}}">
+				<input hidden="true" name="qty" type="text" value="1">
 
-		<p> {{basketItem.productName}} ({{basketItem.productID}}) -  <i> £{{basketItem.productPrice}} </i> </p>
-
-		<form id="checkout">
-		
-			<input hidden="true" name="productID" type="text" value="{{productID}}">
-			<input hidden="true" name="qty" type="text" value="1">
-
-			<input class= "post" type="submit" value="Checkout">
-		</form>
+				<input class= "post" type="submit" value="Checkout">
+			</form>
+		</div>
 
 	</div>
 
