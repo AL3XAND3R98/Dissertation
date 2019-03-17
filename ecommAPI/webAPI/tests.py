@@ -12,6 +12,15 @@ with open('public.pem', mode='rb') as privatefile:
 	pubkey = rsa.PublicKey.load_pkcs1(keydata)
 
 
+with open('public.pem', mode='rb') as privatefile:
+   keydata = privatefile.read()
+   pubkey = rsa.PublicKey.load_pkcs1(keydata)
+
+
+
+
+
+
 message = {  
    "user_deviceOrientation":rsa.encrypt("PT".encode('utf-8'), pubkey).hex(),
    "user_buttonTouch":rsa.encrypt("3".encode('utf-8'), pubkey).hex(),

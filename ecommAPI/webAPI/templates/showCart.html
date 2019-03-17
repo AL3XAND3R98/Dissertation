@@ -33,41 +33,6 @@
 	</div>
 
 
-	<script type="text/javascript">
-
-		$(function()
-		{
-			$("#addToCart").on("submit", function(event)
-			{
-				event.preventDefault();
-				var values = {};
-				$.each($('#addToCart').serializeArray(), function(i, field) {
-					values[field.name] = field.value;
-				});
-
-
-
-				console.log(JSON.stringify(values));
-				$.ajax(
-				{
-					type: 'POST',
-					url: "/api/addToCart/",
-					data: values,
-					dataType: "json",
-					success: function(resultData)
-					{
-						console.log(resultData);
-						window.location.replace("/api/getCart/"+resultData.basketID);
-
-					}
-				}).fail(function(data)
-				{
-					console.log(data)
-				})
-			});
-		});
-
-	</script>
 
 
 

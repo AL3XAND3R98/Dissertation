@@ -30,10 +30,15 @@ from .HashCheck import *
 class CookieParams:
 	def __init__(self, jsonData):
 
-		with open('private.pem', mode='rb') as privatefile:
-			keydata = privatefile.read()
-			self.privkey = rsa.PrivateKey.load_pkcs1(keydata)
-	
+		try:
+			with open('private.pem', mode='rb') as privatefile:
+				keydata = privatefile.read()
+				self.privkey = rsa.PrivateKey.load_pkcs1(keydata)
+		except:
+			with open('private.pem', mode='rb') as privatefile:
+				keydata = privatefile.read()
+				self.privkey = rsa.PrivateKey.load_pkcs1(keydata)
+
 		self.jsonData = jsonData
 		self.session_id = self.getString(jsonData['session_id'])
 		self.ip = self.getString(jsonData['user_ip'])

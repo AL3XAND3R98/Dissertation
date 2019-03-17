@@ -161,14 +161,14 @@ def getCartHelper(bid):
 
 def getCart(request, basketID):
 	try:
-		cartJSON, cart = getCartHelper(basketID)										#
+		cartJSON, cart = getCartHelper(basketID)										#get cartJSON and cart object from helper method
 	except:
-		raise Http404("No cart matches the given query.")
+		raise Http404("No cart matches the given query.")								#if above fails return 404 cart not found
 
 	if(cart.basketID):
-		return JsonResponse(cartJSON, safe=False)
+		return JsonResponse(cartJSON, safe=False)										#if basketID present return cartJSON as response
 	else:
-		return JsonResponse({"success":False})
+		return JsonResponse({"success":False})											#else return false›
 
 ##############################################################################################################################################################
 
@@ -180,19 +180,17 @@ def getCart(request, basketID):
 
 def isValidCookieHelper(request):
 	try:
-		cookieVal = request.COOKIES['BDetect']
+		cookieVal = request.COOKIES['BDetect'] 											#get BDetect Cookie from client session
 	except:
-		return False
+		return False 																	#cookie not present - return False
 	print(cookieVal)
 	try:
-		cookie_object = BDetectCookie.objects.get(cookie_value = cookieVal)
+		cookie_object = BDetectCookie.objects.get(cookie_value = cookieVal)				#Lookup cookie in db
 
-		print(cookie_object.cookie_value)
-		if cookie_object:
-			present = utc.localize(datetime.datetime.now())
-			cookie_expiration = cookie_object.cookie_expiration
-			print(cookie_expiration)
-			if(cookie_expiration>present):
+		if cookie_object:																#cookie value found in db
+			present = utc.localize(datetime.datetime.now())								#current time
+			cookie_expiration = cookie_object.cookie_expiration							#cookie expiry time
+			if(cookie_expiration>present):												#check if expired
 				return True
 		return False
 
@@ -208,22 +206,9 @@ def isValidCookieHelper(request):
 ##############################################################################################################################################################
 
 def isValidCookie(request):
-	cookieVal = request.COOKIES['BDetect']
-	try:
-		cookie_object = BDetectCookie.objects.get(cookie_value = cookieVal)
-
-		print(cookie_object.cookie_value)
-		if cookie_object:
-			present = utc.localize(datetime.datetime.now())
-			cookie_expiration = cookie_object.cookie_expiration
-			print(cookie_expiration)
-			if(cookie_expiration>present):
-				return JsonResponse({'success': True})
-		return JsonResponse({'success': False})
-
-	except Exception as E:
-		print(E)
-		return JsonResponse({'success': False})
+	
+	cookieValid = isValidCookieHelper(request)
+	return JsonResponse({'success': cookieValid})
 
 ##############################################################################################################################################################
 
