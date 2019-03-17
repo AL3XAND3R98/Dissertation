@@ -207,7 +207,7 @@ def isValidCookieHelper(request):
 
 def isValidCookie(request):
 	
-	cookieValid = isValidCookieHelper(request)
+	cookieValid = isValidCookieHelper(request)			#check if cookie is valid with helper method
 	return JsonResponse({'success': cookieValid})
 
 ##############################################################################################################################################################
