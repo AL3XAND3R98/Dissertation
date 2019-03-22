@@ -25,10 +25,10 @@ $.fn.getValues = function()
 		}	
 	};
 
+
+
 $(document).ready(function()
 {
-	
-
 	var values = $.fn.getValues();
 
 	console.log(values);
@@ -59,8 +59,6 @@ $(document).ready(function()
 						console.log(data)
 					});
 				}
-
-
 			}
 		});
 	}

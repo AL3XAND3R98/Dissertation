@@ -9,11 +9,21 @@
 		<link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
 		<link href="{% static "index.css" %}" rel="stylesheet">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+		
 	</head>
 <body>
 	<h1>{{productName}}</h1>
 
-	<div id="productDetails" class="productContainer"> 
+	<div id="productDetails" class="productContainer">
+
+		<div id="buttonList">
+			<form id="deleteCookies">
+				<input style="color:red" type="submit" value="Delete BDetect Cookie">
+			</form>
+		</div>
+
 		<div class="productDetails">
 			<img id="productImage" src="{% static "presto.jpg" %}" class="productPageImg">
 			<p class="description">{{productDesc}} </p>
@@ -28,8 +38,12 @@
 
 			<i class="price"> £ {{productPrice}} </i>
 
+			
+
+
 		</div>
 
+		
 	</div>
 
 
@@ -86,7 +100,27 @@
 			});
 		});
 
+		$(function()
+		{
+			$("#deleteCookies").click(function(event)
+			{
+				event.preventDefault();
+				alert('We are now going to remove the BDetect cookie to demonstrate how the site is not usable without it.');
+				$.cookie("BDetect", null, { path: '/' });
+				alert('Cookie now removed... Try and Add To Cart.');
+				mylist = '<form id="setCookies"><input style="color:green" type="submit" value="Set New Cookie"></form>';
+				$("#deleteCookies").remove();
+				$("#buttonList").append(mylist);
+			});
+		});
+
+	
 	</script>
+
+
+	</script>
+
+
 
 
 
