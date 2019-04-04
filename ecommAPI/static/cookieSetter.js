@@ -1063,16 +1063,6 @@ function fingerprint_plugins() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
 var fp = new Fingerprint({
   canvas: true,
   ie_activex: true,
@@ -1083,7 +1073,7 @@ var fp = new Fingerprint({
 $.fn.getValues = function()
 	{
 		fingerPrint = fp.get()
-		console.log("FPPPPP"+fingerPrint)
+		console.log("FP::"+fingerPrint)
 		return {
 		  "user_innerHTML": "0dc2aa06b41facb0f5a288a9ef928320248a23a5775a23e1763bd18ce3a42afc25189e30c1cb57cf3001fb200bae19d25c98ebfb18616fa577b600ecdff4ce8930d7e20647ca74f0a9ab421343dc843b45c953e6711583f36cffcaefe12157137c5ecf4acb30819c05fe5f80a2890f34e1434c7e1c42a6fdb183b31dfde6e434",
 		  "user_userAgent": "83612f4c338aa408f95254efdf5bcd99082320fbe4f6e00860fc89a377a880c8567271f6da5eeab96198a15d19e5807c7019f52f28baa0938cd25b78e2a7776f36aeccb59ce7b3c03277ad7d4bdedded5212354531bfddc38ab4f6fe285178ec2f69d611ca5249d55700020869c213a61f0d83d248db9fa6b6f11f319e458a24",
